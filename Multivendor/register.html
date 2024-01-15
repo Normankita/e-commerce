@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register</title>
+    <link rel="stylesheet" href="css/sign-in.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="sign-in.css" rel="stylesheet">
+</head>
+
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <main class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="text-center" style="color: #181F6A; font-weight: bold; padding-top: 20px;">Multi<span
+                                style="color: #009F7F;">Vendor</span></h2> <br>
+                        <h1 class="h3 mb-3 fw-normal">Register</h1>
+
+                        <div class="alert alert-danger d-none" id="usernameTakenAlert" role="alert">
+                            Username is already taken. Please choose a different one.
+                        </div>
+
+                        <div class="alert alert-danger d-none" id="emailTakenAlert" role="alert">
+                            Email is already taken. Please choose a different one.
+                        </div>
+
+                        <div class="alert alert-danger d-none" id="passwordMismatchAlert" role="alert">
+                            Passwords do not match.
+                        </div>
+
+                        <div class="alert alert-danger d-none" id="emptyFieldsAlert" role="alert">
+                            Please fill in all required fields.
+                        </div>
+
+                        <form class="needs-validation" id="registrationForm" novalidate>
+                            <div class="form-floating">
+                                <input type="text" id="username" class="form-control" placeholder="Username" required>
+                                <label for="floatingInput">Username</label>
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div> <br>
+
+                            <div class="form-floating">
+                                <input type="email" id="email" class="form-control" placeholder="Email" required>
+                                <label for="floatingInput">Email</label>
+                                <div class="invalid-feedback">
+                                    Please choose a correct email.
+                                </div>
+                            </div> <br>
+
+                            <div class="form-floating">
+                                <input type="password" id="password" class="form-control" placeholder="Password"
+                                    pattern=".{8,}" required>
+                                <label for="floatingPassword">Password</label>
+                                <div class="invalid-feedback">
+                                    Please choose a correct password (at least 8 characters).
+                                </div>
+                            </div> <br>
+
+                            <div class="form-floating">
+                                <input type="password" id="confirmPassword" class="form-control"
+                                    placeholder="Confirm Password" pattern=".{8,}" required>
+                                <label for="floatingPassword">Confirm Password</label>
+                                <div class="invalid-feedback">
+                                    Passwords do not match.
+                                </div>
+                            </div> <br>
+
+                            <button style="background-color: #009F7F; color: #fff;" class="btn w-100 py-2"
+                                type="submit">Register</button>
+                            <br><br>
+                            <p>Already have an account? <a href="sign-in.html" style="color: #009F7F;">Login</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/main.js"></script>
+    <script>
+        // Assume you have a list of registered usernames and emails
+        const registeredUsers = [
+            { username: "mikael", email: "mikael@gmail.com" },
+            { username: "user2", email: "user2@example.com" },
+            { username: "user3", email: "user3@example.com" }
+        ];
+
+        function checkUsernameAndEmail(event) {
+            event.preventDefault(); // Prevent the form from submitting and refreshing the page
+
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            let isUsernameTaken = false;
+            let isEmailTaken = false;
+            let doPasswordsMatch = true;
+
+            for (let i = 0; i < registeredUsers.length; i++) {
+                if (registeredUsers[i].username === username) {
+                    isUsernameTaken = true;
+                    break;
+                }
+
+                if (registeredUsers[i].email === email) {
+                    isEmailTaken = true;
+                    break;
+                }
+            }
+
+            if (password !== confirmPassword) {
+                doPasswordsMatch = false;
+            }
+
+            const usernameTakenAlert = document.getElementById("usernameTakenAlert");
+            const emailTakenAlert = document.getElementById("emailTakenAlert");
+            const passwordMismatchAlert = document.getElementById("passwordMismatchAlert");
+            const emptyFieldsAlert = document.getElementById("emptyFieldsAlert");
+
+            usernameTakenAlert.classList.add("d-none");
+            emailTakenAlert.classList.add("d-none");
+            passwordMismatchAlert.classList.add("d-none");
+            emptyFieldsAlert.classList.add("d-none");
+
+
+            if (username === "" || email === "" || password === "" || confirmPassword === "") {
+                // Show empty fields alert
+                emptyFieldsAlert.classList.remove("d-none");
+                return;
+            }
+
+            if (isUsernameTaken) {
+                // Show username taken alert
+                usernameTakenAlert.classList.remove("d-none");
+            }
+
+            if (isEmailTaken) {
+                // Show email taken alert
+                emailTakenAlert.classList.remove("d-none");
+            }
+
+            if (!doPasswordsMatch) {
+                // Show passwords do not match alert
+                passwordMismatchAlert.classList.remove("d-none");
+            }
+
+            const registrationForm = document.getElementById("registrationForm");
+
+            if (registrationForm.checkValidity() && !isUsernameTaken && !isEmailTaken && doPasswordsMatch) {
+                // Redirect to login page if the form is valid and all conditions are met
+                window.location.href = "stores/clothing/clothing.html";
+            }
+        }
+
+        // Add an event listener to the form submission
+        const registrationForm = document.getElementById("registrationForm");
+        registrationForm.addEventListener("submit", checkUsernameAndEmail);
+    </script>
+</body>
+
+</html>
